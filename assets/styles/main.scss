@@ -1,0 +1,37 @@
+@use "bootstrap/scss/bootstrap";
+
+@font-face {
+  font-family: "Gogh ExtraBold";
+  src: url("@/assets/fonts/Gogh-ExtraBold.woff2") format("woff2");
+}
+@font-face {
+  font-family: "Gogh Medium";
+  src: url("@/assets/fonts/Gogh-Medium.woff2") format("woff2");
+}
+@font-face {
+  font-family: "Gogh Regular";
+  src: url("@/assets/fonts/Gogh-Regular.woff2") format("woff2");
+}
+
+$Dark-Bl: #26263a;
+$Wh: #ffffff;
+$Bl: #000000;
+$Gray: #e6e6e8;
+$Dark-Gray: #666674;
+$Light-Gray: #9999a2;
+$Aqua: #00a5ad;
+$Border-select-Color: #ccccd1;
+@mixin btn {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: fit-content;
+  border: none;
+  padding: 0rem;
+  cursor: pointer;
+}
+@mixin flex-centered {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}

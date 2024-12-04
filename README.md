@@ -1,1 +1,3 @@
+<<<<<<< HEAD
+
 # partners_list
