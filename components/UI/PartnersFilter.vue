@@ -22,95 +22,39 @@
         <h3 class="content__section-title">Выберите тип продукта</h3>
         <div class="d-flex gap-1">
           <UIButton
-            :content="'Для дома'"
-            :btnType="'button'"
-            :class="{ active: isProductTypeActive('Для дома') }"
-            @click="selectProductType('Для дома')"
-          ></UIButton>
-          <UIButton
-            :content="'Для бизнеса'"
-            :btnType="'button'"
-            :class="{ active: isProductTypeActive('Для бизнеса') }"
-            @click="selectProductType('Для бизнеса')"
-          ></UIButton>
+            v-for="type in productTypes"
+            :key="type"
+            :content="type"
+            btnType="button"
+            :class="{ active: isProductTypeActive(normalizeText(type)) }"
+            @click="selectProductType(type)"
+          />
         </div>
       </div>
       <div>
         <h3 class="content__section-title">Выберите продукт</h3>
         <div class="d-flex gap-2">
           <UIButton
-            :content="'Антивирус'"
-            :btnType="'button'"
-            :class="{ active: isProductActive('Антивирус') }"
-            @click="selectProduct('Антивирус')"
-          ></UIButton>
-          <UIButton
-            :content="'GetScreen'"
-            :btnType="'button'"
-            :class="{ active: isProductActive('GetScreen') }"
-            @click="selectProduct('GetScreen')"
-          ></UIButton>
-          <UIButton
-            :content="'Passwork'"
-            :btnType="'button'"
-            :class="{ active: isProductActive('Passwork') }"
-            @click="selectProduct('Passwork')"
-          ></UIButton>
+            v-for="product in products"
+            :key="product"
+            :content="product"
+            btnType="button"
+            :class="{ active: isProductActive(normalizeText(product)) }"
+            @click="selectProduct(product)"
+          />
         </div>
       </div>
       <div>
         <h3 class="content__section-title">Выберите тип партнёра</h3>
         <div class="d-flex gap-2 flex-wrap">
           <UIButton
-            :content="'Партнёры Retail'"
-            :btnType="'button'"
-            :class="{ active: isPartnerTypeActive('Retail') }"
-            @click="selectPartnerType('Retail')"
-          ></UIButton>
-          <UIButton
-            :content="'Партнёры Corporate'"
-            :btnType="'button'"
-            :class="{ active: isPartnerTypeActive('Corporate') }"
-            @click="selectPartnerType('Corporate')"
-          ></UIButton>
-          <UIButton
-            :content="'Интернет-провайдеры'"
-            :btnType="'button'"
-            :class="{
-              active: isPartnerTypeActive('Интернет-провайдеры'),
-            }"
-            @click="selectPartnerType('Интернет-провайдеры')"
-          ></UIButton>
-          <UIButton
-            :content="'Online партнёры'"
-            :btnType="'button'"
-            :class="{
-              active: isPartnerTypeActive('Online партнеры'),
-            }"
-            @click="selectPartnerType('Online партнёры')"
-          ></UIButton>
-          <UIButton
-            :content="'Продажи партнёрам'"
-            :btnType="'button'"
-            :class="{
-              active: isPartnerTypeActive('Продажи партнерам'),
-            }"
-            @click="selectPartnerType('Продажи партнёрам')"
-          ></UIButton>
-          <UIButton
-            :content="' Education партнёры'"
-            :btnType="'button'"
-            :class="{
-              active: isPartnerTypeActive('Education партнеры'),
-            }"
-            @click="selectPartnerType('Education партнёры')"
-          ></UIButton>
-          <UIButton
-            :content="'MSP Партнёры'"
-            :btnType="'button'"
-            :class="{ active: isPartnerTypeActive('MSP Партнеры') }"
-            @click="selectPartnerType('MSP Партнёры')"
-          ></UIButton>
+            v-for="partner in partnerTypes"
+            :key="partner"
+            :content="partner"
+            btnType="button"
+            :class="{ active: isPartnerTypeActive(normalizeText(partner)) }"
+            @click="selectPartnerType(partner)"
+          />
         </div>
       </div>
     </div>
@@ -145,6 +89,18 @@ const cities = [
   { value: 2, text: "Санкт-Петербург" },
   { value: 3, text: "Новосибирск" },
 ];
+const productTypes = ["Для дома", "Для бизнеса"];
+const products = ["Антивирус", "GetScreen", "Passwork"];
+const partnerTypes = [
+  "Партнёры Retail",
+  "Партнёры Corporate",
+  "Интернет-провайдеры",
+  "Online партнёры",
+  "Продажи партнёрам",
+  "Education партнёры",
+  "MSP Партнёры",
+];
+const normalizeText = (text: string) => text.replace(/ё/g, "е");
 
 const filtersStore = useFiltersStore();
 const selectedCountry = computed(() => filtersStore.country);
