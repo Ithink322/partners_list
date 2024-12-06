@@ -162,6 +162,9 @@ const isProductActive = (product: string) => {
 const isPartnerTypeActive = (partnerType: string) => {
   return selectedPartnerTypes.value!.includes(partnerType);
 };
+onMounted(() => {
+  filtersStore.filterPartners();
+});
 
 const selectProductType = (type: string) => {
   filtersStore.setProductType(filtersStore.productType === type ? null : type);
