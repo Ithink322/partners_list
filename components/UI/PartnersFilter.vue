@@ -24,13 +24,13 @@
           <UIButton
             :content="'Для дома'"
             :btnType="'button'"
-            :class="{ active: selectedProductType === 'Для дома' }"
+            :class="{ active: isProductTypeActive('Для дома') }"
             @click="selectProductType('Для дома')"
           ></UIButton>
           <UIButton
             :content="'Для бизнеса'"
             :btnType="'button'"
-            :class="{ active: selectedProductType === 'Для бизнеса' }"
+            :class="{ active: isProductTypeActive('Для бизнеса') }"
             @click="selectProductType('Для бизнеса')"
           ></UIButton>
         </div>
@@ -41,19 +41,19 @@
           <UIButton
             :content="'Антивирус'"
             :btnType="'button'"
-            :class="{ active: selectedProducts!.includes('Антивирус') }"
+            :class="{ active: isProductActive('Антивирус') }"
             @click="selectProduct('Антивирус')"
           ></UIButton>
           <UIButton
             :content="'GetScreen'"
             :btnType="'button'"
-            :class="{ active: selectedProducts!.includes('GetScreen') }"
+            :class="{ active: isProductActive('GetScreen') }"
             @click="selectProduct('GetScreen')"
           ></UIButton>
           <UIButton
             :content="'Passwork'"
             :btnType="'button'"
-            :class="{ active: selectedProducts!.includes('Passwork') }"
+            :class="{ active: isProductActive('Passwork') }"
             @click="selectProduct('Passwork')"
           ></UIButton>
         </div>
@@ -62,22 +62,22 @@
         <h3 class="content__section-title">Выберите тип партнёра</h3>
         <div class="d-flex gap-2 flex-wrap">
           <UIButton
-            :content="'Партнёры Retail  '"
+            :content="'Партнёры Retail'"
             :btnType="'button'"
-            :class="{ active: selectedPartnerTypes.includes('Retail') }"
+            :class="{ active: isPartnerTypeActive('Retail') }"
             @click="selectPartnerType('Retail')"
           ></UIButton>
           <UIButton
             :content="'Партнёры Corporate'"
             :btnType="'button'"
-            :class="{ active: selectedPartnerTypes.includes('Corporate') }"
+            :class="{ active: isPartnerTypeActive('Corporate') }"
             @click="selectPartnerType('Corporate')"
           ></UIButton>
           <UIButton
             :content="'Интернет-провайдеры'"
             :btnType="'button'"
             :class="{
-              active: selectedPartnerTypes.includes('Интернет-провайдеры'),
+              active: isPartnerTypeActive('Интернет-провайдеры'),
             }"
             @click="selectPartnerType('Интернет-провайдеры')"
           ></UIButton>
@@ -85,7 +85,7 @@
             :content="'Online партнёры'"
             :btnType="'button'"
             :class="{
-              active: selectedPartnerTypes.includes('Online партнёры'),
+              active: isPartnerTypeActive('Online партнеры'),
             }"
             @click="selectPartnerType('Online партнёры')"
           ></UIButton>
@@ -93,7 +93,7 @@
             :content="'Продажи партнёрам'"
             :btnType="'button'"
             :class="{
-              active: selectedPartnerTypes.includes('Продажи партнёрам'),
+              active: isPartnerTypeActive('Продажи партнерам'),
             }"
             @click="selectPartnerType('Продажи партнёрам')"
           ></UIButton>
@@ -101,14 +101,14 @@
             :content="' Education партнёры'"
             :btnType="'button'"
             :class="{
-              active: selectedPartnerTypes.includes('Education партнёры'),
+              active: isPartnerTypeActive('Education партнеры'),
             }"
             @click="selectPartnerType('Education партнёры')"
           ></UIButton>
           <UIButton
             :content="'MSP Партнёры'"
             :btnType="'button'"
-            :class="{ active: selectedPartnerTypes.includes('MSP Партнёры') }"
+            :class="{ active: isPartnerTypeActive('MSP Партнеры') }"
             @click="selectPartnerType('MSP Партнёры')"
           ></UIButton>
         </div>
@@ -149,9 +149,19 @@ const cities = [
 const filtersStore = useFiltersStore();
 const selectedCountry = computed(() => filtersStore.country);
 const selectedCity = computed(() => filtersStore.city);
-const selectedProductType = computed(() => filtersStore.productType);
-const selectedProducts = computed(() => filtersStore.products);
-const selectedPartnerTypes = computed(() => filtersStore.partnerTypes);
+const selectedProductType = computed(() => filtersStore.productType || []);
+const selectedProducts = computed(() => filtersStore.products || []);
+const selectedPartnerTypes = computed(() => filtersStore.partnerTypes || []);
+
+const isProductTypeActive = (productType: string) => {
+  return selectedProductType.value === productType;
+};
+const isProductActive = (product: string) => {
+  return selectedProducts.value!.includes(product);
+};
+const isPartnerTypeActive = (partnerType: string) => {
+  return selectedPartnerTypes.value!.includes(partnerType);
+};
 
 const selectProductType = (type: string) => {
   filtersStore.setProductType(filtersStore.productType === type ? null : type);
@@ -168,11 +178,13 @@ const selectProduct = (product: string) => {
 const selectPartnerType = (partnerType: string) => {
   const normalizedPartnerType = partnerType.replace(/ё/g, "е");
 
-  const updatedPartnerTypes = filtersStore.partnerTypes.includes(
+  const updatedPartnerTypes = filtersStore.partnerTypes!.includes(
     normalizedPartnerType
   )
-    ? filtersStore.partnerTypes.filter((item) => item !== normalizedPartnerType)
-    : [...filtersStore.partnerTypes, normalizedPartnerType];
+    ? filtersStore.partnerTypes!.filter(
+        (item) => item !== normalizedPartnerType
+      )
+    : [...filtersStore.partnerTypes!, normalizedPartnerType];
 
   filtersStore.setPartnerType(updatedPartnerTypes);
 };

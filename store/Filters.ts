@@ -6,7 +6,7 @@ interface FiltersState {
   city?: string;
   productType?: string | null;
   products?: string[];
-  partnerTypes: string[];
+  partnerTypes?: string[];
   partners: Partner[];
   filteredPartners: Partner[];
 }
@@ -68,10 +68,10 @@ export const useFiltersStore = defineStore("filtersStore", {
         );
       }
 
-      if (this.partnerTypes.length > 0) {
+      if (this.partnerTypes!.length > 0) {
         partnersToFilter = partnersToFilter.filter((partner) =>
           partner.partnerType.some((type) =>
-            this.partnerTypes.includes(type.replace(/ё/g, "е"))
+            this.partnerTypes!.includes(type.replace(/ё/g, "е"))
           )
         );
       }
